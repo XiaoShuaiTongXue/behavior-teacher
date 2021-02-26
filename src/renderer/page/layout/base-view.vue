@@ -3,8 +3,8 @@
     <div class="menu">
       <left-menu></left-menu>
     </div>
-    <div class="main" >
-      <nav class="base-top" style="z-index: 2;position: fixed;width: 81%;-webkit-app-region:drag">
+    <div class="main">
+      <nav class="base-top" style="z-index: 2;position: fixed;width: 81%">
         <top-content></top-content>
       </nav>
 
