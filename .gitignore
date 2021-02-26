@@ -8,8 +8,7 @@ node_modules/
 npm-debug.log
 npm-debug.log.*
 thumbs.db
-.gitkeep
-src/renderer/assets/python/outline_class_flow
-src/renderer/assets/python/outline_class_new
+!.gitkeep
+
 # Project exclude paths
 /dist/

@@ -1,6 +1,11 @@
 function startlisten (this_) {
   const net = require('net')
   // 1 引入模块
+  console.log('aaaaaaaaaa')
+  console.log(this_.d)
+  this_.d = 999
+  this_.totalStudentNumber = this_.totalStudentNumber + 10
+  console.log('ccccccccccc')
   var srcstr = null
   function analysis (str_) {
     let getstr = JSON.parse(str_)
@@ -15,6 +20,19 @@ function startlisten (this_) {
       alert('sadfgds')
     } else if (getstr['command'] === 'dangerous_act') {
       this_.seen_ = true
+    } else if (getstr['command'] === 'outline_data') {
+      let d = JSON.parse(getstr['dict'])
+      this_.writeCount = d['书写次数']
+      this_.putBagCount = d['放置物体次数']
+      this_.playPhoneCount = d['玩手机次数']
+      this_.lookNoteCount = d['看纸条次数']
+      this_.passingNoteCount = d['传纸条次数']
+
+      this_.writeCountTotal += d['书写次数']
+      this_.putBagCountTotal += d['放置物体次数']
+      this_.playPhoneCountTotal += d['玩手机次数']
+      this_.lookNoteCountTotal += d['看纸条次数']
+      this_.passingNoteCountTotal += d['传纸条次数']
     }
     return 'got it, ' + str_
   }

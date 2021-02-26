@@ -14,31 +14,18 @@
               <h6 class="card-subtitle text-muted">老师将规定具体签到时间，中途无法终止签到。</h6>
             </div>
             <div class="card-body">
-                <template>
-                  <el-select v-model="signData.courseName" placeholder="请选择课程" @click="getCourse">
-                    <el-option
-                            v-for="(course,index) in courses"
-                            :key="index"
-                            :label="course"
-                            :value="course">
-                    </el-option>
-                  </el-select>
-                </template>
-              <br><br>
-              <template>
-                <el-select v-model="signData.signTime" placeholder="请选择签到时长(min)">
-                  <el-option
-                          v-for="item in options"
-                          :key="item"
-                          :label="item"
-                          :value="item">
-                  </el-option>
-                </el-select>
-              </template>
-
+              <select class="form-control mb-3">
+                <option selected>请选择规定签到时间</option>
+                <option>5 min</option>
+                <option>10 min</option>
+                <option>15 min</option>
+                <option>20 min</option>
+                <option>25 min</option>
+                <option>30 min</option>
+              </select>
               <div class="card-body text-center">
                 <div class="mb-3">
-                  <button class="btn btn-pill btn-primary" @click="getSign(), signOut()">开始签到</button>
+                  <button class="btn btn-pill btn-primary">开始签到</button>
                 </div>
               </div>
             </div>
@@ -46,158 +33,322 @@
           </div>
         </div>
 
-        <div class="col-12 col-xl-6">
+        <div class="col-12 col-lg-6">
           <div class="card">
             <div class="card-header">
-              <h5 class="card-title">学生名单</h5>
-              <h6 class="card-subtitle text-muted">自动获取所选课程的学生相关信息。</h6>
+              <h5 class="card-title">运行提示</h5>
+              <h6 class="card-subtitle text-muted"></h6>
             </div>
-            <template>
-              <el-table
-                      @selection-change="getRowDatas"
-                      :data="studentData"
-                      style="width: 100%"
-                      max-height="250">
-                <el-table-column
-                        prop="student"
-                        label="姓名"
-                        width="80%">
-                </el-table-column>
-                <el-table-column
-                        prop="id"
-                        label="学号"
-                        width="180%">
-                </el-table-column>
-                <el-table-column
-                        prop="course_"
-                        label="课程"
-                        width="80%">
-                  <template>
-                    {{course}}
-                  </template>
-                </el-table-column>
-                <el-table-column
-                        fixed="right"
-                        label="操作"
-                        width="100%">
-                  <template slot-scope="scope">
-                    <el-button
-                            @click.native.prevent="deleteRow(scope.$index, studentData)"
-                            type="danger"
-                            size="mini">
-                      移除
-                    </el-button>
-                  </template>
-                </el-table-column>
-              </el-table>
-            </template>
-
-
+            <div class="card-body">
+              <div class="mb-3">
+                <div class="alert alert-primary alert-dismissible" role="alert">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <div class="alert-icon">
+                    <i class="far fa-fw fa-bell"></i>
+                  </div>
+                  <div class="alert-message">
+                    <strong>运行成功！</strong> 系统正在自动识别人脸点名！
+                  </div>
+                </div>
+                <div class="alert alert-secondary alert-dismissible" role="alert">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <div class="alert-icon">
+                    <i class="far fa-fw fa-bell"></i>
+                  </div>
+                  <div class="alert-message">
+                    <strong>运行失败！</strong> 若是技术或网络问题请及时向管理员反馈！
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
         <div class="col-12 col-xl-6">
           <div class="card">
             <div class="card-header">
-              <h5 class="card-title">未签到学生名单</h5>
-              <h6 class="card-subtitle text-muted">没有按时签到的学生，造成 <code>旷课行为</code>。 </h6>
+              <h5 class="card-title">签到成功</h5>
+              <h6 class="card-subtitle text-muted">按时签到的学生的信息将会放置在这里。</h6>
             </div>
-            <template>
-              <el-table
-                      :data="signouts"
-                      style="width: 100%"
-                      max-height="250">
-                <el-table-column
-                        prop="student"
-                        label="姓名"
-                        width="80%">
-                  <template>
-
-                  </template>
-                </el-table-column>
-                <el-table-column
-                        prop="id"
-                        label="学号"
-                        width="170%">
-                </el-table-column>
-                <el-table-column
-                        prop="course_"
-                        label="课程"
-                        width="80%">
-                  <template>
-                    {{course}}
-                  </template>
-                </el-table-column>
-                <el-table-column
-                        fixed="right"
-                        label="操作"
-                        width="150%">
-                  <template slot-scope="scope">
-                    <el-button
-                            size="mini"
-                            type="info"
-                            @click.native.prevent="getData_3(scope.row)">事假</el-button>
-                    <el-button
-                            @click.native.prevent="getData_2(scope.row)"
-                            type="success"
-                            size="mini">
-                      代签
-                    </el-button>
-                  </template>
-                </el-table-column>
-              </el-table>
-            </template>
+            <table class="table">
+              <thead>
+              <tr>
+                <th style="width:25%;">姓名</th>
+                <th style="width:25%;">学号</th>
+                <th class="d-none d-md-table-cell" style="width:30%">签到时间</th>
+                <th style="width:20%;">操作</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>卢仲</td>
+                <td>180702240128</td>
+                <td class="d-none d-md-table-cell">June 21, 1961</td>
+                <td class="table-action">
+                  <a><i data-toggle="modal" data-target="#defaultModalPrimary"
+                        class="align-middle" data-feather="edit-2"></i></a>
+                  <a href="#"><i class="align-middle" data-feather="trash"></i></a>
+                </td>
+              </tr>
+              <tr>
+                <td>张飒名</td>
+                <td>180702240128</td>
+                <td class="d-none d-md-table-cell">May 15, 1948</td>
+                <td class="table-action">
+                  <a><i data-toggle="modal" data-target="#defaultModalPrimary"
+                        class="align-middle" data-feather="edit-2"></i></a>
+                  <a href="#"><i class="align-middle" data-feather="trash"></i></a>
+                </td>
+              </tr>
+              <tr>
+                <td>哑奴与</td>
+                <td>180702240128</td>
+                <td class="d-none d-md-table-cell">September 14, 1965</td>
+                <td class="table-action">
+                  <a><i data-toggle="modal" data-target="#defaultModalPrimary"
+                        class="align-middle" data-feather="edit-2"></i></a>
+                  <a href="#"><i class="align-middle" data-feather="trash"></i></a>
+                </td>
+              </tr>
+              <tr>
+                <td>季华园</td>
+                <td>180702240128</td>
+                <td class="d-none d-md-table-cell">April 2, 1971</td>
+                <td class="table-action">
+                  <a><i data-toggle="modal" data-target="#defaultModalPrimary"
+                        class="align-middle" data-feather="edit-2"></i></a>
+                  <a href="#"><i class="align-middle" data-feather="trash"></i></a>
+                </td>
+              </tr>
+              <tr>
+                <td>罗志思</td>
+                <td>180702240128</td>
+                <td class="d-none d-md-table-cell">October 12, 1966</td>
+                <td class="table-action">
+                  <a><i data-toggle="modal" data-target="#defaultModalPrimary"
+                        class="align-middle" data-feather="edit-2"></i></a>
+                  <a href="#"><i class="align-middle" data-feather="trash"></i></a>
+                </td>
+              </tr>
+              </tbody>
+            </table>
           </div>
         </div>
 
         <div class="col-12 col-xl-6">
           <div class="card">
             <div class="card-header">
-              <h5 class="card-title">迟到名单</h5>
-              <h6 class="card-subtitle text-muted">在正式上课15分钟内依旧没有签到成功， <code>系统自动判定旷课</code> 。</h6>
+              <h5 class="card-title">签到迟到</h5>
+              <h6 class="card-subtitle text-muted">学生没有按时签到，造成 <code>迟到行为</code>。 </h6>
             </div>
-            <template>
-              <el-table
-                      :data="signlates"
-                      style="width: 100%"
-                      max-height="250">
-                <el-table-column
-                        prop="student"
-                        label="姓名"
-                        width="80%">
-                </el-table-column>
-                <el-table-column
-                        prop="id"
-                        label="学号"
-                        width="170%">
-                </el-table-column>
-                <el-table-column
-                        prop="course_"
-                        label="课程"
-                        width="80%">
-                  <template>
-                    {{course}}
-                  </template>
-                </el-table-column>
-                <el-table-column
-                        fixed="right"
-                        label="操作"
-                        width="150%">
-                  <template slot-scope="scope">
-                    <el-button
-                            size="mini"
-                            type="info"
-                            @click.native.prevent="getData_3(scope.row)">事假</el-button>
-                    <el-button
-                            @click.native.prevent="getData_2(scope.row)"
-                            type="success"
-                            size="mini">
-                      代签
-                    </el-button>
-                  </template>
-                </el-table-column>
-              </el-table>
-            </template>
+            <table class="table table-striped">
+              <thead>
+              <tr>
+                <th style="width:25%;">姓名</th>
+                <th style="width:25%;">学号</th>
+                <th class="d-none d-md-table-cell" style="width:30%">签到时间</th>
+                <th style="width:20%;">操作</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>卢仲</td>
+                <td>180702240128</td>
+                <td class="d-none d-md-table-cell">June 21, 1961</td>
+                <td class="table-action">
+                  <a><i data-toggle="modal" data-target="#defaultModalPrimary"
+                        class="align-middle" data-feather="edit-2"></i></a>
+                  <a href="#"><i class="align-middle" data-feather="trash"></i></a>
+                </td>
+              </tr>
+              <tr>
+                <td>张飒名</td>
+                <td>180702240128</td>
+                <td class="d-none d-md-table-cell">May 15, 1948</td>
+                <td class="table-action">
+                  <a><i data-toggle="modal" data-target="#defaultModalPrimary"
+                        class="align-middle" data-feather="edit-2"></i></a>
+                  <a href="#"><i class="align-middle" data-feather="trash"></i></a>
+                </td>
+              </tr>
+              <tr>
+                <td>哑奴与</td>
+                <td>180702240128</td>
+                <td class="d-none d-md-table-cell">September 14, 1965</td>
+                <td class="table-action">
+                  <a><i data-toggle="modal" data-target="#defaultModalPrimary"
+                        class="align-middle" data-feather="edit-2"></i></a>
+                  <a href="#"><i class="align-middle" data-feather="trash"></i></a>
+                </td>
+              </tr>
+              <tr>
+                <td>季华园</td>
+                <td>180702240128</td>
+                <td class="d-none d-md-table-cell">April 2, 1971</td>
+                <td class="table-action">
+                  <a><i data-toggle="modal" data-target="#defaultModalPrimary"
+                        class="align-middle" data-feather="edit-2"></i></a>
+                  <a href="#"><i class="align-middle" data-feather="trash"></i></a>
+                </td>
+              </tr>
+              <tr>
+                <td>罗志思</td>
+                <td>180702240128</td>
+                <td class="d-none d-md-table-cell">October 12, 1966</td>
+                <td class="table-action">
+                  <a><i data-toggle="modal" data-target="#defaultModalPrimary"
+                        class="align-middle" data-feather="edit-2"></i></a>
+                  <a href="#"><i class="align-middle" data-feather="trash"></i></a>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="col-12 col-xl-6">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="card-title">旷课行为</h5>
+              <h6 class="card-subtitle text-muted">正式上课15分钟内没有签到成功， <code>系统自动判定旷课</code> 。</h6>
+            </div>
+            <table class="table">
+              <thead>
+              <tr>
+                <th style="width:25%;">姓名</th>
+                <th style="width:25%;">学号</th>
+                <th class="d-none d-md-table-cell" style="width:30%">签到时间</th>
+                <th style="width:20%;">操作</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>卢仲</td>
+                <td>180702240128</td>
+                <td class="d-none d-md-table-cell">June 21, 1961</td>
+                <td class="table-action">
+                  <a><i data-toggle="modal" data-target="#defaultModalPrimary"
+                        class="align-middle" data-feather="edit-2"></i></a>
+                  <a href="#"><i class="align-middle" data-feather="trash"></i></a>
+                </td>
+              </tr>
+              <tr>
+                <td>张飒名</td>
+                <td>180702240128</td>
+                <td class="d-none d-md-table-cell">May 15, 1948</td>
+                <td class="table-action">
+                  <a><i data-toggle="modal" data-target="#defaultModalPrimary"
+                        class="align-middle" data-feather="edit-2"></i></a>
+                  <a href="#"><i class="align-middle" data-feather="trash"></i></a>
+                </td>
+              </tr>
+              <tr>
+                <td>哑奴与</td>
+                <td>180702240128</td>
+                <td class="d-none d-md-table-cell">September 14, 1965</td>
+                <td class="table-action">
+                  <a><i data-toggle="modal" data-target="#defaultModalPrimary"
+                        class="align-middle" data-feather="edit-2"></i></a>
+                  <a href="#"><i class="align-middle" data-feather="trash"></i></a>
+                </td>
+              </tr>
+              <tr>
+                <td>季华园</td>
+                <td>180702240128</td>
+                <td class="d-none d-md-table-cell">April 2, 1971</td>
+                <td class="table-action">
+                  <a><i data-toggle="modal" data-target="#defaultModalPrimary"
+                        class="align-middle" data-feather="edit-2"></i></a>
+                  <a href="#"><i class="align-middle" data-feather="trash"></i></a>
+                </td>
+              </tr>
+              <tr>
+                <td>罗志思</td>
+                <td>180702240128</td>
+                <td class="d-none d-md-table-cell">October 12, 1966</td>
+                <td class="table-action">
+                  <a><i data-toggle="modal" data-target="#defaultModalPrimary"
+                        class="align-middle" data-feather="edit-2"></i></a>
+                  <a href="#"><i class="align-middle" data-feather="trash"></i></a>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="col-12 col-xl-6">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="card-title">学生请假</h5>
+              <h6 class="card-subtitle text-muted">学生事假、病假行为，由老师操作，更改记录。</h6>
+            </div>
+            <table class="table table-striped">
+              <thead>
+              <tr>
+                <th style="width:25%;">姓名</th>
+                <th style="width:25%;">学号</th>
+                <th class="d-none d-md-table-cell" style="width:30%">签到时间</th>
+                <th style="width:20%;">操作</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>卢仲</td>
+                <td>180702240128</td>
+                <td class="d-none d-md-table-cell">June 21, 1961</td>
+                <td class="table-action">
+                  <a><i data-toggle="modal" data-target="#defaultModalPrimary"
+                        class="align-middle" data-feather="edit-2"></i></a>
+                  <a href="#"><i class="align-middle" data-feather="trash"></i></a>
+                </td>
+              </tr>
+              <tr>
+                <td>张飒名</td>
+                <td>180702240128</td>
+                <td class="d-none d-md-table-cell">May 15, 1948</td>
+                <td class="table-action">
+                  <a><i data-toggle="modal" data-target="#defaultModalPrimary"
+                        class="align-middle" data-feather="edit-2"></i></a>
+                  <a href="#"><i class="align-middle" data-feather="trash"></i></a>
+                </td>
+              </tr>
+              <tr>
+                <td>哑奴与152</td>
+                <td>180702240128</td>
+                <td class="d-none d-md-table-cell">September 14, 1965</td>
+                <td class="table-action">
+                  <a><i data-toggle="modal" data-target="#defaultModalPrimary"
+                        class="align-middle" data-feather="edit-2"></i></a>
+                  <a href="#"><i class="align-middle" data-feather="trash"></i></a>
+                </td>
+              </tr>
+              <tr>
+                <td>季华园</td>
+                <td>180702240128</td>
+                <td class="d-none d-md-table-cell">April 2, 1971</td>
+                <td class="table-action">
+                  <a><i data-toggle="modal" data-target="#defaultModalPrimary"
+                        class="align-middle" data-feather="edit-2"></i></a>
+                  <a href="#"><i class="align-middle" data-feather="trash"></i></a>
+                </td>
+              </tr>
+              <tr>
+                <td>罗志思</td>
+                <td>180702240128</td>
+                <td class="d-none d-md-table-cell">October 12, 1966</td>
+                <td class="table-action">
+                  <a><i data-toggle="modal" data-target="#defaultModalPrimary"
+                        class="align-middle" data-feather="edit-2"></i></a>
+                  <a href="#"><i class="align-middle" data-feather="trash"></i></a>
+                </td>
+              </tr>
+              </tbody>
+            </table>
           </div>
         </div>
 
@@ -228,167 +379,6 @@
   </div>
 </template>
 <script>
-  import axios from 'axios'
-  import {Notification} from 'element-ui'
-
-  const ipcRenderer = require('electron').ipcRenderer
-  export default {
-    data () {
-      return {
-        teacher: {
-          name: '',
-          sex: '',
-          teacherNumber: '',
-          avatar: ''
-        },
-        class_: [],
-        courses: [],
-        options: [
-          5, 10, 15, 20, 25, 30
-        ],
-        signData: {
-          courseName: '',
-          signTime: null,
-          truantTime: 15
-        },
-        studentData: [],
-        course: [],
-        signouts: [],
-        signout: [],
-        signStudents: null,
-        courseName: null,
-        signlates: []
-      }
-    },
-    methods: {
-      getInfo () {
-        let that = this
-        axios.get('/teacher/info').then((res) => {
-          console.log(res)
-          that.teacher = res.data.data
-        }).catch((err) => {
-          console.log(err)
-        })
-        axios.get('/teacher/course').then((res) => {
-          console.log(res)
-          that.class_ = res.data.data
-        }).catch((err) => {
-          console.log(err)
-        })
-      },
-      exit () {
-        ipcRenderer.send('close')
-      },
-      updateAvatar () {
-        Notification({
-          message: '该功能正在抓紧开发中',
-          position: 'bottom-right'
-        })
-      },
-      getCourse () {
-        let that = this
-        axios.get('/teacher/course').then((res) => {
-          console.log(res)
-          that.courses = res.data.data
-        }).catch((err) => {
-          console.log(err)
-        })
-      },
-      getSign () {
-        var vm = this
-        axios({
-          method: 'post',
-          url: '/teacher/sign',
-          params: vm.signData
-        }).then(function (response) {
-          console.log(response.data)
-          vm.$message({
-            message: response.data.message,
-            type: 'success'
-          })
-          vm.studentData = response.data.data.signStudents
-          vm.course = response.data.data.course.courseName
-        })
-        //         .catch(function (error) {
-        //   // vm.$message({
-        //   //   message: error,
-        //   //   type: 'warning'
-        //   // })
-        // })
-      },
-      deleteRow (index, rows) {
-        rows.splice(index, 1)
-      },
-      getData_3: function (row) {
-        var vm = this
-        axios({
-          method: 'post',
-          url: '/teacher/update/sigin',
-          // params: vm.signData
-          params: {
-            signID: row.id,
-            state: 3
-          }
-        }).then(function (response) {
-          vm.$message({
-            message: response.data.message,
-            type: 'success'
-          })
-        }).catch(function (error) {
-          vm.$message({
-            message: error,
-            type: 'warning'
-          })
-        })
-      },
-      getData_2: function (row) {
-        var vm = this
-        axios({
-          method: 'post',
-          url: '/teacher/update/sigin',
-          // params: vm.signData
-          params: {
-            signID: row.id,
-            state: 2
-          }
-        }).then(function (response) {
-          vm.$message({
-            message: response.data.message,
-            type: 'success'
-          })
-        }).catch(function (error) {
-          vm.$message({
-            message: error,
-            type: 'warning'
-          })
-        })
-      },
-      signOut () {
-        let that = this
-        setInterval(() => {
-          axios.get('/teacher/sign/out')
-            .then((res) => {
-              console.log(res)
-              if (res.data.code === 2000) { that.signouts = res.data.data }
-            })
-            .catch((err) => {
-              console.log(err)
-            })
-          axios.get('/teacher/sign/late')
-            .then((res) => {
-              console.log(res)
-              if (res.data.code === 2000) { that.signlates = res.data.data }
-            })
-            .catch((err) => {
-              console.log(err)
-            })
-        }, 1000)
-      }
-    },
-    mounted () {
-      this.getCourse()
-    }
-  }
 </script>
 <style>
 </style>
