@@ -88,7 +88,7 @@
   </div>
 </template>
 <script>
-// import {csend} from '../../assets/js/c'
+import {csend} from '../../assets/js/c'
 import {startlisten} from '../../assets/js/vue_listener'
 
 export default {
@@ -100,7 +100,7 @@ export default {
   methods: {
     start () {
       startlisten(this)
-      // csend('offlineBehaviorAfterStart')
+      csend('offlineBehaviorAfterStart')
     },
     stop () {
     },

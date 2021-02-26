@@ -1,9 +1,0 @@
-
-let writeCount = 1
-
-
-      writeCount: writeCount,
-      putBagCount: ,
-      playPhoneCount: 3,
-      lookNoteCount: 4,
-      passingNoteCount: 5,

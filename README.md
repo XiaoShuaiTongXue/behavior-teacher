@@ -1,28 +1,32 @@
-# behavior-check
+# behavior-teacher-Info
+```bash
+介绍：行为检测-前端-教师端
 
-> An electron-vue project
+框架：electron-vue,行为检测算法
 
-#### Build Setup
+功能：人脸识别签到，课上行为检测，课下行为检测，分析报告
+```
+## Build Setup
 
 ``` bash
 # install dependencies
 npm install
 
-# serve with hot reload at localhost:9080
+# serve with hot reload at localhost:8080
 npm run dev
 
-# build electron application for production
+# build for production with minification
 npm run build
 
-# run unit & end-to-end tests
+# build for production and view the bundle analyzer report
+npm run build --report
+
+# run unit tests
+npm run unit
+
+# run e2e tests
+npm run e2e
+
+# run all tests
 npm test
-
-
-# lint all JS/Vue component files in `src/`
-npm run lint
-
 ```
-
----
-
-This project was generated with [electron-vue](https://github.com/SimulatedGREG/electron-vue)@[45a3e22](https://github.com/SimulatedGREG/electron-vue/tree/45a3e224e7bb8fc71909021ccfdcfec0f461f634) using [vue-cli](https://github.com/vuejs/vue-cli). Documentation about the original structure can be found [here](https://simulatedgreg.gitbooks.io/electron-vue/content/index.html).
