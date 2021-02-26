@@ -9,12 +9,12 @@
         active-text-color="#ffd04b">
       <template v-for="(item,index) in menuList">
         <router-link :to="item.path" v-if="!item.children&&!item.hidden" :key="index">
-          <el-menu-item :index="index">
+          <el-menu-item :index="index.toString()">
             <i :class="item.icon"></i>
             <span slot="title">{{ item.name }}</span>
           </el-menu-item>
         </router-link>
-        <el-submenu v-if="item.children&&!item.hidden" :key="index" :index="index+''">
+        <el-submenu v-if="item.children&&!item.hidden" :key="index" :index="index.toString()">
           <template slot="title">
             <i :class="item.icon"></i>
             <span>{{ item.name }}</span>

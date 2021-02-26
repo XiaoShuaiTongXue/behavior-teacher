@@ -1,14 +1,14 @@
 <template>
-  <div class="top-card" style="-webkit-app-region: drag">
-    <el-dropdown class="top-info" :hide-on-click="false">
+  <div class="top-card">
+    <el-dropdown class="top-info" :hide-on-click="false" style="-webkit-app-region:no-drag">
       <span class="el-dropdown-link">
-          <el-avatar size="60" :src=teacher.avatar></el-avatar>
+          <el-avatar :src=teacher.avatar></el-avatar>
     </span>
-      <el-dropdown-menu slot="dropdown" size="medium">
+      <el-dropdown-menu slot="dropdown">
         <el-dropdown-item disabled>工号：{{ this.teacher.teacherNumber }}</el-dropdown-item>
         <el-dropdown-item disabled>姓名：{{ this.teacher.name }}</el-dropdown-item>
         <el-dropdown-item disabled>性别：{{ this.teacher.sex }}</el-dropdown-item>
-        <el-dropdown-item divided >
+        <el-dropdown-item divided>
           教授课程：
         </el-dropdown-item>
         <template v-model="class_">

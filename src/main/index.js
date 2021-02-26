@@ -13,7 +13,6 @@ if (process.env.NODE_ENV !== 'development') {
 }
 
 let win
-let newWin
 const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
@@ -24,12 +23,12 @@ function createWindow () {
    */
   win = new BrowserWindow({
     width: 630,
-    height: 510,
+    height: 488,
     webPreferences: {
       nodeIntegration: true
-    }
-    // resizable: false,
-    // frame: false
+    },
+    resizable: false,
+    frame: false
   })
 
   win.loadURL(winURL)
@@ -41,20 +40,6 @@ function createWindow () {
 
 ipcMain.on('close', function () {
   app.quit()
-})
-
-ipcMain.on('do-register', function () {
-  newWin = new BrowserWindow({
-    width: 595,
-    height: 605,
-    label: '用户注册',
-    resizable: false,
-    submenu: ''
-  })
-  newWin.loadURL(winURL + '/#/register')
-  newWin.on('closed', () => {
-    win = null
-  })
 })
 
 const path = require('path')
